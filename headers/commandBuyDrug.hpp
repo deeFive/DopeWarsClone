@@ -16,7 +16,7 @@ public:
     void call() const override
     {
         Drug drug = instance.get_drug(drug_name.c_str());
-        if (drug.get_name() != "Empty")
+        if (drug.get_name() != string{"Empty"})
         {
         if(player.get_maney() < amount * drug.get_price())
             cout << "Nie masz tyle pieniędzy. ";

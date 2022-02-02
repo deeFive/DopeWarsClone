@@ -34,14 +34,15 @@ public:
     {
         return amount;
     }
-    void set_name(const char *value)
+    void set_name(const string& value)
     {
         name = value;
     }
-    const char *get_name() const
+    string get_name() const
     {
-        if (name != "")
-            return name.c_str();
+        // if (name.c_str() != "")
+            return name;
+        
     }
     Drug& operator=(Drug& obj) =default;
     friend ostream & operator<<(ostream &os, const Drug& obj){
