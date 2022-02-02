@@ -22,21 +22,18 @@ public:
     Instance(string name_) : name{name_} {}
     void set_drugs(DrugInstance& obj)
     {
-        // cout << "Nowa wartość " << obj.get_name() << " to: " << obj.get_price() << endl;
         bool is_in_list = false;
-        for(auto tmp : instance_drugs){
-            if(tmp.get_name() == obj.get_name())
+        for(auto& tmp : instance_drugs){
+            if(tmp.get_name() == obj.get_name()){
                 is_in_list = true;
+                std::swap(tmp,obj);
+                cout << "Nowa wartość " << tmp.get_name() << " to: " << tmp.get_price() << endl;
+            }
             continue; 
         }
-        if(is_in_list == false)
-            instance_drugs.push_back(obj);
-        else {
-           for(auto tmp : instance_drugs)
-           {
-               if(tmp.get_name() == obj.get_name() && tmp.get_price() != obj.get_price())
-                tmp.set_price(obj.get_price());
-           } 
+        if(is_in_list == false){
+            instance_drugs.push_back(obj);        
+            cout << "Nowa wartość " << obj.get_name() << " to: " << obj.get_price() << endl;
         }
     }
 
