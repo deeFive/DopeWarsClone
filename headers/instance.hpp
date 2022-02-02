@@ -22,9 +22,10 @@ public:
     Instance(string name_) : name{name_} {}
     void set_drugs(DrugInstance& obj)
     {
+        // cout << "Nowa wartość " << obj.get_name() << " to: " << obj.get_price() << endl;
         bool is_in_list = false;
         for(auto tmp : instance_drugs){
-            if(tmp.get_name() == obj.get_name() && tmp.get_price() == obj.get_price())
+            if(tmp.get_name() == obj.get_name())
                 is_in_list = true;
             continue; 
         }
@@ -41,7 +42,7 @@ public:
 
     Drug get_drug(const string& drug_name_)
     {
-        for (const auto drug : instance_drugs)
+        for (auto drug : instance_drugs)
         {
             if (drug.get_name() == drug_name_)
                 return drug;

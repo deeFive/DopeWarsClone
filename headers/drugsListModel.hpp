@@ -41,6 +41,6 @@ public:
         for(auto & obj :drugs_list_model){
             set_price(obj);
         }
-        return std::move(drugs_list_model);
+        return drugs_list_model;
     } 
 };

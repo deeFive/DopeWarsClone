@@ -13,7 +13,10 @@ class CommandSetNewDrugList : public Command
     void call() const override {
         // tutaj jest problem
         auto new_model = drug_list_model.create_new_model();
+        for(auto o : new_model){
+        }
         for(auto obj : new_model){
+            // cout << "Nowa wartość " << obj.get_name() << " to: " << obj.get_price() << endl;
             instance.set_drugs(obj);
         }
     }
