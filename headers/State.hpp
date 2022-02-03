@@ -29,10 +29,7 @@ class GameFSM
         switch (s)
         {
         case EnumState::Start:{
-            os << "Start." << endl;
-            cout << "Podaj imię: " << endl;
-            string name;
-            cin >> name;             
+            os << "Start." << endl;           
             break;
         }
         case EnumState::InLocation:
@@ -82,7 +79,7 @@ class GameFSM
     }
     map<EnumState, vector<pair<EnumTrigger, EnumState>>> rules;
     EnumState current_state{EnumState::Start};
-    EnumState exitEnumState{EnumState::Quit};
+    EnumState exit_enum_state{EnumState::Quit};
 
     void init_rules()
     {
@@ -124,7 +121,7 @@ public:
             }
 
             current_state = rules[current_state][input].second;
-            if (current_state == exitEnumState)
+            if (current_state == exit_enum_state)
                 break;
         }
     }
