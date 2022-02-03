@@ -97,8 +97,25 @@ class GameFST
     public:
         GameFST(){};
         void play(){
-            while{true}{
+            while(true){
                 cout << current_state;
+                select_trigger:
+                cout << "Wybierz akcję: " << endl;
+                int i =0;
+                for (auto item : rules[current_state])
+                {
+                    cout << i++ << item.first << endl;
+                }
+                int input;
+                cin >> input;
+                if(input < 0 || (input + 1) > rules[current_state].size())
+                {
+                    cout << "Nieprawidłowa opcja. Spróbuj jeszce raz." << endl;
+                    goto select_trigger;
+                }
+
+                current_state = rules[current_state][input].second;
+                if(current_state == exitState) break;
             }
         }
 };

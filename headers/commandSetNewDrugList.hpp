@@ -1,3 +1,4 @@
+#pragma once
 #include "drugsListModel.hpp"
 #include "instance.hpp"
 #include "Command.hpp"
