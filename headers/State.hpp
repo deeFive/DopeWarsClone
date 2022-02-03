@@ -13,6 +13,9 @@ using namespace std;
 
 class GameFSM
 {
+    Player player;
+    Instance current_instance;
+    DrugsListModel drug_list_model;
     enum class EnumState
     {
         Start,
@@ -25,9 +28,13 @@ class GameFSM
     {
         switch (s)
         {
-        case EnumState::Start:
+        case EnumState::Start:{
             os << "Start." << endl;
+            cout << "Podaj imię: " << endl;
+            string name;
+            cin >> name;             
             break;
+        }
         case EnumState::InLocation:
             os << "Gracz znajduje się w lokacji." << endl;
             break;
@@ -94,14 +101,14 @@ class GameFSM
     }
 
 public:
-    GameFSM(){};
+    GameFSM() = default;
 
     void play()
     {
         while (true)
         {
             cout << current_state;
-        select_trigger:
+            select_trigger:
             cout << "Wybierz akcję: " << endl;
             int i = 0;
             for (auto item : rules[current_state])
