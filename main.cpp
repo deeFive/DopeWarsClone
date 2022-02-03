@@ -5,6 +5,7 @@
 #include "headers/consolePlayerObserver.hpp"
 #include "headers/drugsListModel.hpp"
 #include "headers/commandSetNewDrugList.hpp"
+#include "State.hpp"
 #include <chrono>
 #include <thread>
 
