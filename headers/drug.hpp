@@ -40,7 +40,7 @@ public:
     }
     string get_name() const
     {
-        // if (name.c_str() != "")
+        if (name.c_str() != "")
             return name;
         
     }

@@ -19,7 +19,7 @@ public:
         //     DrugInstance{"Trawka", 0, 1000, 20, 60},
         //     DrugInstance{"Haszysz", 0, 1000, 30, 150}
     };
-    Instance(string name_) : name{name_} {}
+    Instance(const string& name_) : name{name_} {}
     void set_drugs(DrugInstance& obj)
     {
         bool is_in_list = false;
@@ -27,13 +27,11 @@ public:
             if(tmp.get_name() == obj.get_name()){
                 is_in_list = true;
                 std::swap(tmp,obj);
-                cout << "Nowa wartość " << tmp.get_name() << " to: " << tmp.get_price() << endl;
             }
             continue; 
         }
         if(is_in_list == false){
             instance_drugs.push_back(obj);        
-            cout << "Nowa wartość " << obj.get_name() << " to: " << obj.get_price() << endl;
         }
     }
 
@@ -68,6 +66,6 @@ public:
     void list_all_drugs() const
     {
         for (const auto obj : instance_drugs)
-            cout << obj << '\n';
+            cout << obj << endl;
     }
 };
