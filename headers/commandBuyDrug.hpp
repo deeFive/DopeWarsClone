@@ -1,3 +1,4 @@
+#pragma once
 #include "Command.hpp"
 #include "player.hpp"
 #include "instance.hpp"

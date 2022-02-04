@@ -1,3 +1,4 @@
+#pragma once
 #include "Observer.hpp"
 #include "player.hpp"
 
