@@ -17,6 +17,7 @@ public:
     Player(const string &name_) : name{name_}, maney{2000}
     {
     }
+    Player(): name{"default"} ,maney{2000} {};
     const string &get_name() const
     {
         return name;

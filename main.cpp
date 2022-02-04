@@ -1,32 +1,121 @@
-#include "headers/drug.hpp"
-#include "headers/player.hpp"
-#include "headers/commandBuyDrug.hpp"
-#include "headers/instance.hpp"
-#include "headers/consolePlayerObserver.hpp"
-#include "headers/drugsListModel.hpp"
-#include "headers/commandSetNewDrugList.hpp"
-#include "State.hpp"
-#include <chrono>
-#include <thread>
+#include <map>
+#include <vector>
+#include <iostream>
+#include "drug.hpp"
+#include "player.hpp"
+#include "commandBuyDrug.hpp"
+#include "instance.hpp"
+#include "consolePlayerObserver.hpp"
+#include "drugsListModel.hpp"
+#include "commandSetNewDrugList.hpp"
 
 using namespace std;
+enum class EnumState
+{
+    Start,
+    InLocation,
+    Buy,
+    Sell,
+    Quit
+};
 
-int main() {
-    Player player{"mic"};
-    DrugsListModel drugs_list_model;    
-    ConsolePlayerObserver consoleNotify;
-    Instance new_york{"New york"};
-    CommandBuyDrugs *buyHera;
-    CommandSetNewDrugList set_new_drugs_list(drugs_list_model,new_york);
-    player.subscribe(&consoleNotify);
-    set_new_drugs_list.call();
-    buyHera = new CommandBuyDrugs(player,new_york,20,"Speed");
-    buyHera->call();
-    set_new_drugs_list.call();
-    delete buyHera;
-    buyHera = new CommandBuyDrugs(player,new_york,10,"Speed");
-    buyHera->call();
-    player.list_player_drugs();
-    
-    return 0;
+enum class EnumTrigger
+{
+    StartGame,
+    ToLocation,
+    ToBuy,
+    ToSell,
+    EndGame,
+};
+int main()
+{
+    Player player;
+    Instance current_instance("new_york");
+    DrugsListModel drug_list_model;
+
+    map<EnumState, vector<pair<EnumTrigger, EnumState>>> rules;
+    EnumState current_state{EnumState::Start};
+    EnumState exit_enum_state{EnumState::Quit};
+
+    rules[EnumState::Start] = {
+        {EnumTrigger::ToLocation, EnumState::InLocation}};
+    rules[EnumState::InLocation] = {
+        {EnumTrigger::ToLocation, EnumState::InLocation},
+        {EnumTrigger::ToBuy, EnumState::Buy},
+        {EnumTrigger::ToSell, EnumState::Sell},
+        {EnumTrigger::EndGame, EnumState::Quit}};
+    rules[EnumState::Buy] = {
+        {EnumTrigger::ToLocation, EnumState::InLocation},
+    };
+    rules[EnumState::Sell] = {
+        {EnumTrigger::ToLocation, EnumState::InLocation}};
+
+    while (true)
+    {
+        cout << current_state;
+    select_trigger:
+        cout << "Wybierz akcję: " << endl;
+        int i = 0;
+        for (auto item : rules[current_state])
+        {
+            cout << i++ << item.first << endl;
+        }
+        int input;
+        cin >> input;
+        if (input < 0 || (input + 1) > rules[current_state].size())
+        {
+            cout << "Nieprawidłowa opcja. Spróbuj jeszce raz." << endl;
+            goto select_trigger;
+        }
+
+        current_state = rules[current_state][input].second;
+        if (current_state == exit_enum_state)
+            break;
+    }
+}
+ostream &operator<<(ostream &os, const EnumState &s)
+{
+    switch (s)
+    {
+    case EnumState::Start:
+    {
+        os << "Start." << endl;        
+        break;
+    }
+    case EnumState::InLocation:
+        os << "Gracz znajduje się w lokacji." << endl;
+        break;
+    case EnumState::Buy:
+        os << "Kup : " << endl;
+        break;
+    case EnumState::Sell:
+        os << "Sprzedaj : " << endl;
+        break;
+    case EnumState::Quit:
+        os << "Koniec gry" << endl;
+        break;
+    }
+    return os;
+}
+ostream &operator<<(ostream &os, const EnumTrigger &s)
+{
+    switch (s)
+    {
+    case EnumTrigger::StartGame:
+        os << "Gra się zaczyna." << endl;
+        break;
+    case EnumTrigger::ToLocation:
+        os << "Przemieszczasz się do lokacji." << endl;
+        break;
+    case EnumTrigger::ToBuy:
+        os << "Co zamierzasz kupić." << endl;
+        break;
+    case EnumTrigger::ToSell:
+        os << "Co zamierzasz sprzedać." << endl;
+        break;
+    case EnumTrigger::EndGame:
+        os << "Gra się kończy." << endl;
+        break;
+    }
+    return os;
 }

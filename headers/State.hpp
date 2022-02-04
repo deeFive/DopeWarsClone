@@ -11,6 +11,7 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 enum class EnumState
 {
     Start,
@@ -92,8 +93,94 @@ class GameFST
         };
         rules[EnumState::Sell] = {
             {EnumTrigger::ToLocation,EnumState::InLocation}
-        };
+=======
+class GameFSM
+{
+    Player player;
+    Instance current_instance;
+    DrugsListModel drug_list_model;
+    enum class EnumState
+    {
+        Start,
+        InLocation,
+        Buy,
+        Sell,
+        Quit
+    };
+    friend ostream &operator<<(ostream &os, const EnumState &s)
+    {
+        switch (s)
+        {
+        case EnumState::Start:{
+            os << "Start." << endl;           
+            break;
+        }
+        case EnumState::InLocation:
+            os << "Gracz znajduje się w lokacji." << endl;
+            break;
+        case EnumState::Buy:
+            os << "Kup narkotyk: " << endl;
+            break;
+        case EnumState::Sell:
+            os << "Sprzedaj narkotyk: " << endl;
+            break;
+        case EnumState::Quit:
+            os << "Koniec gry" << endl;
+            break;
+        }
+        return os;
     }
+    enum class EnumTrigger
+    {
+        StartGame,
+        ToLocation,
+        ToBuy,
+        ToSell,
+        EndGame,
+    };
+    friend ostream &operator<<(ostream &os, const EnumTrigger &s)
+    {
+        switch (s)
+        {
+        case EnumTrigger::StartGame:
+            os << "Gra się zaczyna." << endl;
+            break;
+        case EnumTrigger::ToLocation:
+            os << "Przemieszczasz się do lokacji." << endl;
+            break;
+        case EnumTrigger::ToBuy:
+            os << "Co zamierzasz kupić." << endl;
+            break;
+        case EnumTrigger::ToSell:
+            os << "Co zamierzasz sprzedać." << endl;
+            break;
+        case EnumTrigger::EndGame:
+            os << "Gra się kończy." << endl;
+            break;
+        }
+        return os;
+    }
+    map<EnumState, vector<pair<EnumTrigger, EnumState>>> rules;
+    EnumState current_state{EnumState::Start};
+    EnumState exit_enum_state{EnumState::Quit};
+
+    void init_rules()
+    {
+        rules[EnumState::Start] = {
+            {EnumTrigger::ToLocation, EnumState::InLocation}};
+        rules[EnumState::InLocation] = {
+            {EnumTrigger::ToLocation, EnumState::InLocation},
+            {EnumTrigger::ToBuy, EnumState::Buy},
+            {EnumTrigger::ToSell, EnumState::Sell},
+            {EnumTrigger::EndGame, EnumState::Quit}};
+        rules[EnumState::Buy] = {
+            {EnumTrigger::ToLocation, EnumState::InLocation},
+>>>>>>> 41fe6560937db658d429cffcf266d65ba02516f8
+        };
+        rules[EnumState::Sell] = {
+            {EnumTrigger::ToLocation, EnumState::InLocation}};
+    }
+<<<<<<< HEAD
     public:
         GameFST(){};
         void play()
@@ -114,6 +201,35 @@ class GameFST
                 }
                 current_state = rules[current_state][input].second;
                 if(current_state == exit_state) break;
+=======
+
+public:
+    GameFSM() = default;
+
+    void play()
+    {
+        while (true)
+        {
+            cout << current_state;
+            select_trigger:
+            cout << "Wybierz akcję: " << endl;
+            int i = 0;
+            for (auto item : rules[current_state])
+            {
+                cout << i++ << item.first << endl;
             }
+            int input;
+            cin >> input;
+            if (input < 0 || (input + 1) > rules[current_state].size())
+            {
+                cout << "Nieprawidłowa opcja. Spróbuj jeszce raz." << endl;
+                goto select_trigger;
+>>>>>>> 41fe6560937db658d429cffcf266d65ba02516f8
+            }
+
+            current_state = rules[current_state][input].second;
+            if (current_state == exit_enum_state)
+                break;
         }
+    }
 };
