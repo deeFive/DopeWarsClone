@@ -12,7 +12,8 @@ class CommandBuyDrugs : public Command
     string drug_name;
 
 public:
-    CommandBuyDrugs(Player &player_, Instance &instance_, int amount_, string drug_name_) : amount{amount_}, drug_name{drug_name_}, player{player_}, instance{instance_} {}
+    CommandBuyDrugs(Player &player_, Instance &instance_, int amount_, string drug_name_) : amount{amount_}, drug_name{drug_name_}, player{player_}, instance{instance_} 
+    {set_state(EnumState::Buy);}
     void call() const override
     {
         Drug drug = instance.get_drug(drug_name);
