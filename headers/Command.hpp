@@ -8,7 +8,9 @@ struct Command {
     EnumState get_state()const {
         return state;
     }
-    virtual void call() const ;
+    Command() {};
+    Command(Command&t) {state = t.state;};
+    virtual void call() const =0;
 };
 
 inline ostream &operator<<(ostream &os, const Command &c)

@@ -1,3 +1,4 @@
+#include <functional>
 #include <map>
 #include <vector>
 #include <iostream>
@@ -28,14 +29,17 @@ class GameFST
     CommandBuyDrugs buyDrugs{player, current_instance, current_amount, current_drug_name};
     CommandSellDrugs sellDrugs{player, current_instance, current_amount, current_drug_name};
     CommandExitGame exitGame;
-    map<EnumState, vector<pair<EnumTrigger, Command>>> rules;
+    map<EnumState, vector<pair<EnumTrigger, reference_wrapper<Command>>>> rules;
     EnumState current_state{EnumState::Start};
     EnumState exit_state{EnumState::Quit};
 
     void init_rules()
     {   
-        auto pair = make_pair({EnumState::Start,{{EnumTrigger::StartGame, listDrugInLocation}}});
-        rules.emplace(pair);
+        pair<EnumTrigger,std::reference_wrapper<Command>> in_pair = pair<EnumTrigger,reference_wrapper<Command>>(EnumTrigger::StartGame,listDrugInLocation);
+        vector<std::pair<EnumTrigger,reference_wrapper<Command>>> tmp_v;
+        tmp_v.push_back(in_pair);
+        auto pair = make_pair(EnumState::Start,tmp_v);
+        // rules.emplace();
     };
     /*
         rules[EnumState::InLocation] = {
